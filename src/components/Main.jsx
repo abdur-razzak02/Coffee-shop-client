@@ -1,7 +1,16 @@
+import { Outlet } from "react-router-dom";
+import Navbar from "./Navbar";
+import SubBanner from "./SubBanner";
+import Banner from "./Banner";
+import InstagramPhotos from "./InstagramPhotos";
+
 const Main = () => {
     return (
         <div>
-            <h1>main page</h1>
+            <Banner></Banner>
+            <SubBanner></SubBanner>
+            <InstagramPhotos></InstagramPhotos>
+            {/* <Outlet></Outlet> */}
         </div>
     );
 };
