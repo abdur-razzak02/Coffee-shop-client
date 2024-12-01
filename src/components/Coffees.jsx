@@ -4,8 +4,8 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 
-const Coffees = ({ coffees }) => {
-    const [loadcoffees, setCoffees] = useState([]);
+const Coffees = ({ loadedCoffees }) => {
+  const [coffees, setCoffees] = useState(loadedCoffees)
 
   const handleDelete = (id) => {
     Swal.fire({
@@ -18,25 +18,25 @@ const Coffees = ({ coffees }) => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        console.log(id);
           fetch(`http://localhost:5000/coffees/${id}`, {
               method: 'DELETE'
         })
           .then((res) => res.json())
-              .then(() => {
-                if (deletedCount > 0) {
-                  const updatedCoffees = coffees.filter((coffee) => coffee._id !== id);
-                  setCoffees(updatedCoffees)
+              .then((data) => {
+                if (data.deletedCount > 0) {
                 Swal.fire({
                     title: "Deleted!",
                     text: "Your coffee has been deleted.",
                     icon: "success",
                 });
+                  const remaing = coffees.filter(cof => cof._id !== id);
+                  setCoffees(remaing)
               }
           });
       }
     });
   };
+
   return (
     <div className="px-5 lg:px-0 lg:w-4/5 mx-auto grid md:grid-cols-2 gap-5">
       {coffees.map((coffee) => (
@@ -63,19 +63,19 @@ const Coffees = ({ coffees }) => {
               </p>
             </div>
           </div>
-          <div className="space-y-1 lg:space-y-3 lg:pr-5 text-lg lg:text-4xl">
-            <h1 className="bg-[#D2B48C] text-white p-3 rounded-md cursor-pointer">
+          <div className="space-y-1 lg:space-y-3 lg:pr-5 text-lg lg:text-3xl">
+            <h1 className="bg-[#D2B48C] text-white p-2 rounded-md cursor-pointer">
               <IoMdEye />
             </h1>
             <Link to={`updateCoffee/${coffee._id}`} className="block">
             {/* / */}
-            <h1 className="bg-[#3C393B] text-white p-3 rounded-md cursor-pointer">
+            <h1 className="bg-[#3C393B] text-white p-2 rounded-md cursor-pointer">
               <MdEdit />
             </h1>
             </Link>
             <h1
               onClick={() => handleDelete(coffee._id)}
-              className="bg-[#EA4744] text-white p-3 rounded-md cursor-pointer"
+              className="bg-[#EA4744] text-white p-2 rounded-md cursor-pointer"
             >
               <MdDelete />
             </h1>

@@ -13,6 +13,8 @@ import UpdateCoffee from './components/UpdateCoffee.jsx';
 import Banner from './components/Banner.jsx';
 import Root from './components/Root.jsx';
 import Coffees from './components/Coffees.jsx';
+import Login from './components/Login.jsx';
+import Signup from './components/Signup.jsx';
 
 const router = createBrowserRouter([
   {
@@ -32,7 +34,15 @@ const router = createBrowserRouter([
         path: '/updateCoffee/:id',
         element: <UpdateCoffee></UpdateCoffee>,
         loader: ({params})=> fetch(`http://localhost:5000/coffees/${params.id}`)
-      }
+      },
+      {
+        path: '/login',
+        element: <Login></Login>
+      },
+      {
+        path: '/signup',
+        element: <Signup></Signup>
+      },
     ]
   }
 ]);

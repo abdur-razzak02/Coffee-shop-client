@@ -3,9 +3,11 @@ import SubBanner from "./SubBanner";
 import Banner from "./Banner";
 import InstagramPhotos from "./InstagramPhotos";
 import Coffees from "./Coffees";
+import { useState } from "react";
 
 const Main = () => {
-  const coffees = useLoaderData();
+  const loadedCoffees = useLoaderData();
+  // const [coffees, setCoffees] = useState(loadedCoffees)
 
   return (
     <div>
@@ -16,7 +18,7 @@ const Main = () => {
         <h1 className="text-coffee text-4xl font-semibold font-rancho mb-5 text-center xl:mb-10">
           Our Popular Products
         </h1>
-        <Coffees coffees={coffees}></Coffees>
+        <Coffees loadedCoffees={loadedCoffees}></Coffees>
       </div>
       <InstagramPhotos></InstagramPhotos>
     </div>

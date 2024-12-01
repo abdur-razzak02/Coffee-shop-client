@@ -3,7 +3,7 @@ import { MdEmail, MdLocationOn } from "react-icons/md";
 
 const Footer = () => {
   return (
-    <div className="bg-footerbg w-full bg-no-repeat bg-cover bg-center py-10 lg:py-16 lg:pt-28 mt-10">
+    <div className="bg-footerbg w-full bg-no-repeat bg-cover bg-center py-10 lg:py-16 lg:pt-28">
       <div className="px-5 lg:px-0 lg:w-4/5 mx-auto grid sm:grid-cols-2 gap-5 sm:gap-16">
         <div className="space-y-5">
           <img
