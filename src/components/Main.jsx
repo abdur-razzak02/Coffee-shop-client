@@ -1,18 +1,26 @@
-import { Outlet } from "react-router-dom";
-import Navbar from "./Navbar";
+import { useLoaderData } from "react-router-dom";
 import SubBanner from "./SubBanner";
 import Banner from "./Banner";
 import InstagramPhotos from "./InstagramPhotos";
+import Coffees from "./Coffees";
 
 const Main = () => {
-    return (
-        <div>
-            <Banner></Banner>
-            <SubBanner></SubBanner>
-            <InstagramPhotos></InstagramPhotos>
-            {/* <Outlet></Outlet> */}
-        </div>
-    );
+  const coffees = useLoaderData();
+
+  return (
+    <div>
+      <Banner></Banner>
+      <SubBanner></SubBanner>
+      <div className="bg-all-coffee-bg bg-cover bg-center bg-no-repeat mt-5 sm:mt-10 lg:mt-20">
+        <p className="text-center mb-2">--- Sip & Savor ---</p>
+        <h1 className="text-coffee text-4xl font-semibold font-rancho mb-5 text-center xl:mb-10">
+          Our Popular Products
+        </h1>
+        <Coffees coffees={coffees}></Coffees>
+      </div>
+      <InstagramPhotos></InstagramPhotos>
+    </div>
+  );
 };
 
 export default Main;

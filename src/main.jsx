@@ -12,6 +12,7 @@ import AddCoffee from './components/AddCoffee.jsx';
 import UpdateCoffee from './components/UpdateCoffee.jsx';
 import Banner from './components/Banner.jsx';
 import Root from './components/Root.jsx';
+import Coffees from './components/Coffees.jsx';
 
 const router = createBrowserRouter([
   {
@@ -20,17 +21,19 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <Main></Main>
+        element: <Main></Main>,
+        loader: ()=>fetch('http://localhost:5000/coffees')
       },
       {
         path: '/addCoffee',
         element: <AddCoffee></AddCoffee>
       },
+      {
+        path: '/updateCoffee/:id',
+        element: <UpdateCoffee></UpdateCoffee>,
+        loader: ({params})=> fetch(`http://localhost:5000/coffees/${params.id}`)
+      }
     ]
-  },
-  {
-    path: '/updateCoffee',
-    element: <UpdateCoffee></UpdateCoffee>
   }
 ]);
 

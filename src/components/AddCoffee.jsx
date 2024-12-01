@@ -1,14 +1,16 @@
 import { FaArrowLeft } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import Swal from 'sweetalert2'
 
 const AddCoffee = () => {
+
   const handleAddCoffee = (event) => {
     event.preventDefault();
     const form = event.target;
     const name = form.name.value;
     const chef = form.chef.value;
     const supplier = form.supplier.value;
-    const taste = form.taste.value;
+    const price = form.price.value;
     const category = form.category.value;
     const details = form.details.value;
     const photoURL = form.photoURL.value;
@@ -16,12 +18,33 @@ const AddCoffee = () => {
       name,
       chef,
       supplier,
-      taste,
+      price,
       category,
       details,
       photoURL,
-    };
-    console.log(newCoffee);
+      };
+      
+      fetch('http://localhost:5000/coffees', {
+          method: 'POST',
+          headers: {
+              'content-type': 'application/json'
+          },
+          body: JSON.stringify(newCoffee)
+      })
+          .then(res => res.json())
+          .then(data => {
+            console.log(data);
+            if (data.insertedId) {
+              Swal.fire({
+                title: 'Success!',
+                text: 'Successfully added',
+                icon: 'success',
+                confirmButtonText: 'Ok'
+              })
+              form.reset()
+            }
+      })
+
   };
 
   return (
@@ -90,13 +113,13 @@ const AddCoffee = () => {
               <div className="form-control w-full">
                 <label className="label">
                   <span className="label-text text-lg font-semibold">
-                    Taste
+                    Price
                   </span>
                 </label>
                 <input
-                  name="taste"
+                  name="price"
                   type="text"
-                  placeholder="Enter coffee taste"
+                  placeholder="Enter coffee price"
                   className="input input-bordered"
                   required
                 />
