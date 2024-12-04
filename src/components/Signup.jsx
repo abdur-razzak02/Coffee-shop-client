@@ -1,7 +1,14 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { FaGoogle } from 'react-icons/fa';
+import { AuthContext } from '../provider/AuthProvider';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
+  const { createUser } = useContext(AuthContext)
+  const [errorMessage, setErrorMessage] = useState('')
+  const navigate = useNavigate()
+  
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -21,7 +28,36 @@ const Signup = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
+    createUser(formData.email, formData.password)
+      .then(result => {
+        const createdTime = result?.user?.metadata?.
+        creationTime;
+        const newUser = {name:formData.name, email:formData.email, createdTime, photoURL:formData.photoURL}
+        
+        console.log(newUser);
+
+        Swal.fire({
+          title: 'Success',
+          text: 'Account created Successfully',
+          icon: 'success',
+          confirmButtonText: 'Ok'
+        })
+      
+        fetch('http://localhost:5000/users', {
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newUser)
+        })
+          .then(res => res.json())
+        .then(data => console.log(data))
+      
+        navigate('/')
+      })
+      .catch(error => {
+      setErrorMessage(error.code);
+    })
   };
 
   return (
@@ -32,6 +68,7 @@ const Signup = () => {
           <div className="mb-4">
             <label htmlFor="name" className="block text-sm font-semibold">Full Name</label>
             <input
+              required
               type="text"
               id="name"
               name="name"
@@ -45,6 +82,7 @@ const Signup = () => {
           <div className="mb-4">
             <label htmlFor="email" className="block text-sm font-semibold">Email</label>
             <input
+              required
               type="email"
               id="email"
               name="email"
@@ -58,6 +96,7 @@ const Signup = () => {
           <div className="mb-4">
             <label htmlFor="password" className="block text-sm font-semibold">Password</label>
             <input
+              required
               type="password"
               id="password"
               name="password"
@@ -71,6 +110,7 @@ const Signup = () => {
           <div className="mb-4">
             <label htmlFor="photoURL" className="block text-sm font-semibold">Profile Picture URL</label>
             <input
+              required
               type="url"
               id="photoURL"
               name="photoURL"
@@ -92,6 +132,10 @@ const Signup = () => {
             />
             <label htmlFor="acceptTerms" className="ml-2 text-sm">I accept the <span className="text-blue-500">Terms & Conditions</span></label>
           </div>
+
+          {
+            errorMessage && <p className='text-red-500 text-center'>{ errorMessage}</p>
+          }
 
           <button
             type="submit"

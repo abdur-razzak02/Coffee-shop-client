@@ -1,7 +1,36 @@
+import { useContext } from 'react';
 import { FaGoogle } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../provider/AuthProvider';
 
 const Login = () => {
+  const {loginUser} = useContext(AuthContext)
+
+  const handleLogin = e => {
+    e.preventDefault();
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    loginUser(email, password)
+      .then(result => {
+        const lastSignInTime = result?.user?.metadata?.lastSignInTime;
+        const loginInfo = { email, lastSignInTime }
+        
+        fetch(`http://localhost:5000/users`, {
+          method: 'PATCH',
+          headers: {
+            'content-type': 'application/json'
+          },
+          body: JSON.stringify(loginInfo)
+        })
+          .then(res => res.json())
+          .then(data => {
+          console.log('updated data', data);
+        })
+      })
+      .catch(error => {
+      console.log(error.code);
+    })
+  }
     return (
         <div className="py-10 lg:py-20 px-5 md:px-0 bg-base-200 flex justify-center items-center">
           <div className="bg-white p-5 lg:p-10 rounded-lg shadow-lg max-w-sm w-full">
@@ -12,12 +41,12 @@ const Login = () => {
               <h2 className="text-3xl font-semibold text-center text-coffee font-rancho">Login</h2>
             </div>
     
-            <form>
+            <form onSubmit={handleLogin}>
               <div className="mb-4">
                 <label htmlFor="email" className="block text-sm font-medium text-gray-600">Email Address</label>
                 <input 
                   type="email" 
-                  id="email" 
+                  name="email" 
                   className="input input-bordered w-full mt-1"
                   placeholder="Enter your email"
                 />
@@ -27,7 +56,7 @@ const Login = () => {
                 <label htmlFor="password" className="block text-sm font-medium text-gray-600">Password</label>
                 <input 
                   type="password" 
-                  id="password" 
+                  name="password" 
                   className="input input-bordered w-full mt-1"
                   placeholder="Enter your password"
                 />
