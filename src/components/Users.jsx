@@ -18,7 +18,7 @@ const Users = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:5000/users/${id}`, {
+        fetch(`coffee-shop-server-three.vercel.app/users/${id}`, {
           method: "DELETE",
         })
           .then((res) => res.json())
@@ -29,8 +29,8 @@ const Users = () => {
                 text: "This user has been deleted.",
                 icon: "success",
               });
-                const remaining = users.filter(user => user._id !== id)
-                setUsers(remaining)
+              const remaining = users.filter((user) => user._id !== id);
+              setUsers(remaining);
             }
           });
       }
@@ -39,7 +39,7 @@ const Users = () => {
 
   return (
     <div className="px-5 lg:px-0 lg:w-4/5 mx-auto py-5 lg:py-10">
-      <div className="text-2xl mb-5">Total user {users.length}</div>
+      <div className="text-2xl mb-5">Total user {users?.length}</div>
 
       <div className="overflow-x-auto">
         <table className="table">
@@ -54,14 +54,18 @@ const Users = () => {
             </tr>
           </thead>
           <tbody>
-
-            {users.map((user) => (
+            {Array.isArray(users) &&
+              users.map((user) => (
               <tr key={user._id}>
                 <td>
                   <div className="flex items-center gap-3">
                     <div className="avatar border border-gray-300 rounded-xl p-1 pb-0">
                       <div className="h-12 w-12">
-                        <img src={user.photoURL} alt="user imagea" className="rounded-lg"/>
+                        <img
+                          src={user.photoURL}
+                          alt="user imagea"
+                          className="rounded-lg"
+                        />
                       </div>
                     </div>
                     <div>

@@ -5,7 +5,8 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const Coffees = ({ loadedCoffees }) => {
-  const [coffees, setCoffees] = useState(loadedCoffees)
+  console.log(loadedCoffees);
+  const [coffees, setCoffees] = useState(loadedCoffees || []);
 
   const handleDelete = (id) => {
     Swal.fire({
@@ -18,20 +19,20 @@ const Coffees = ({ loadedCoffees }) => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-          fetch(`http://localhost:5000/coffees/${id}`, {
-              method: 'DELETE'
+        fetch(`coffee-shop-server-three.vercel.app/coffees/${id}`, {
+          method: "DELETE",
         })
           .then((res) => res.json())
-              .then((data) => {
-                if (data.deletedCount > 0) {
-                Swal.fire({
-                    title: "Deleted!",
-                    text: "Your coffee has been deleted.",
-                    icon: "success",
-                });
-                  const remaing = coffees.filter(cof => cof._id !== id);
-                  setCoffees(remaing)
-              }
+          .then((data) => {
+            if (data.deletedCount > 0) {
+              Swal.fire({
+                title: "Deleted!",
+                text: "Your coffee has been deleted.",
+                icon: "success",
+              });
+              const remaining = coffees.filter((cof) => cof._id !== id);
+              setCoffees(remaining);
+            }
           });
       }
     });
@@ -39,7 +40,9 @@ const Coffees = ({ loadedCoffees }) => {
 
   return (
     <div className="px-5 lg:px-0 lg:w-4/5 mx-auto grid md:grid-cols-2 gap-5">
-      {coffees.map((coffee) => (
+      {
+        Array.isArray(coffees) &&
+        coffees.map((coffee) => (
         <div
           key={coffee._id}
           className="bg-[#F5F4F1] p-5 rounded-lg flex gap-2 lg:gap-5 items-center justify-between"
@@ -68,10 +71,10 @@ const Coffees = ({ loadedCoffees }) => {
               <IoMdEye />
             </h1>
             <Link to={`updateCoffee/${coffee._id}`} className="block">
-            {/* / */}
-            <h1 className="bg-[#3C393B] text-white p-2 rounded-md cursor-pointer">
-              <MdEdit />
-            </h1>
+              {/* / */}
+              <h1 className="bg-[#3C393B] text-white p-2 rounded-md cursor-pointer">
+                <MdEdit />
+              </h1>
             </Link>
             <h1
               onClick={() => handleDelete(coffee._id)}

@@ -1,25 +1,25 @@
-import React, { useContext, useState } from 'react';
-import { FaGoogle } from 'react-icons/fa';
-import { AuthContext } from '../provider/AuthProvider';
-import Swal from 'sweetalert2';
-import { useNavigate } from 'react-router-dom';
+import React, { useContext, useState } from "react";
+import { FaGoogle } from "react-icons/fa";
+import { AuthContext } from "../provider/AuthProvider";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
-  const { createUser } = useContext(AuthContext)
-  const [errorMessage, setErrorMessage] = useState('')
-  const navigate = useNavigate()
-  
+  const { createUser } = useContext(AuthContext);
+  const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    photoURL: '',
+    name: "",
+    email: "",
+    password: "",
+    photoURL: "",
     acceptTerms: false,
   });
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    if (type === 'checkbox') {
+    if (type === "checkbox") {
       setFormData({ ...formData, [name]: checked });
     } else {
       setFormData({ ...formData, [name]: value });
@@ -29,44 +29,52 @@ const Signup = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     createUser(formData.email, formData.password)
-      .then(result => {
-        const createdTime = result?.user?.metadata?.
-        creationTime;
-        const newUser = {name:formData.name, email:formData.email, createdTime, photoURL:formData.photoURL}
-        
+      .then((result) => {
+        const createdTime = result?.user?.metadata?.creationTime;
+        const newUser = {
+          name: formData.name,
+          email: formData.email,
+          createdTime,
+          photoURL: formData.photoURL,
+        };
+
         console.log(newUser);
 
         Swal.fire({
-          title: 'Success',
-          text: 'Account created Successfully',
-          icon: 'success',
-          confirmButtonText: 'Ok'
-        })
-      
-        fetch('http://localhost:5000/users', {
-          method: 'POST',
+          title: "Success",
+          text: "Account created Successfully",
+          icon: "success",
+          confirmButtonText: "Ok",
+        });
+
+        fetch("coffee-shop-server-three.vercel.app/users", {
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(newUser)
+          body: JSON.stringify(newUser),
         })
-          .then(res => res.json())
-        .then(data => console.log(data))
-      
-        navigate('/')
+          .then((res) => res.json())
+          .then((data) => console.log(data));
+
+        navigate("/");
       })
-      .catch(error => {
-      setErrorMessage(error.code);
-    })
+      .catch((error) => {
+        setErrorMessage(error.code);
+      });
   };
 
   return (
     <div className="bg-base-200 py-10 lg:py-20 flex justify-center items-center px-5 lg:px-0">
       <div className="bg-white p-5 lg:p-8 rounded-xl shadow-lg w-full max-w-lg">
-        <h2 className="text-2xl font-bold text-center mb-6 font-rancho">Create Account</h2>
+        <h2 className="text-2xl font-bold text-center mb-6 font-rancho">
+          Create Account
+        </h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="name" className="block text-sm font-semibold">Full Name</label>
+            <label htmlFor="name" className="block text-sm font-semibold">
+              Full Name
+            </label>
             <input
               required
               type="text"
@@ -80,7 +88,9 @@ const Signup = () => {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-semibold">Email</label>
+            <label htmlFor="email" className="block text-sm font-semibold">
+              Email
+            </label>
             <input
               required
               type="email"
@@ -94,7 +104,9 @@ const Signup = () => {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="password" className="block text-sm font-semibold">Password</label>
+            <label htmlFor="password" className="block text-sm font-semibold">
+              Password
+            </label>
             <input
               required
               type="password"
@@ -108,7 +120,9 @@ const Signup = () => {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="photoURL" className="block text-sm font-semibold">Profile Picture URL</label>
+            <label htmlFor="photoURL" className="block text-sm font-semibold">
+              Profile Picture URL
+            </label>
             <input
               required
               type="url"
@@ -130,12 +144,15 @@ const Signup = () => {
               onChange={handleInputChange}
               className="checkbox checkbox-primary w-4 h-4"
             />
-            <label htmlFor="acceptTerms" className="ml-2 text-sm">I accept the <span className="text-blue-500">Terms & Conditions</span></label>
+            <label htmlFor="acceptTerms" className="ml-2 text-sm">
+              I accept the{" "}
+              <span className="text-blue-500">Terms & Conditions</span>
+            </label>
           </div>
 
-          {
-            errorMessage && <p className='text-red-500 text-center'>{ errorMessage}</p>
-          }
+          {errorMessage && (
+            <p className="text-red-500 text-center">{errorMessage}</p>
+          )}
 
           <button
             type="submit"
@@ -146,7 +163,12 @@ const Signup = () => {
           </button>
 
           <div className="mt-4 text-center">
-            <p>Already have an account? <a href="/login" className="text-blue-500">Login here</a></p>
+            <p>
+              Already have an account?{" "}
+              <a href="/login" className="text-blue-500">
+                Login here
+              </a>
+            </p>
           </div>
         </form>
 

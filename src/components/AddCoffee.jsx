@@ -1,9 +1,8 @@
 import { FaArrowLeft } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 
 const AddCoffee = () => {
-
   const handleAddCoffee = (event) => {
     event.preventDefault();
     const form = event.target;
@@ -22,28 +21,27 @@ const AddCoffee = () => {
       category,
       details,
       photoURL,
-      };
-      
-      fetch('http://localhost:5000/coffees', {
-          method: 'POST',
-          headers: {
-              'content-type': 'application/json'
-          },
-          body: JSON.stringify(newCoffee)
-      })
-          .then(res => res.json())
-          .then(data => {
-            if (data.insertedId) {
-              Swal.fire({
-                title: 'Success!',
-                text: 'Successfully added',
-                icon: 'success',
-                confirmButtonText: 'Ok'
-              })
-              form.reset()
-            }
-      })
+    };
 
+    fetch("coffee-shop-server-three.vercel.app/coffees", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(newCoffee),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.insertedId) {
+          Swal.fire({
+            title: "Success!",
+            text: "Successfully added",
+            icon: "success",
+            confirmButtonText: "Ok",
+          });
+          form.reset();
+        }
+      });
   };
 
   return (

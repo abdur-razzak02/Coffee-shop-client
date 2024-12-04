@@ -7,8 +7,8 @@ import { useState } from "react";
 
 const Main = () => {
   const loadedCoffees = useLoaderData();
-  // const [coffees, setCoffees] = useState(loadedCoffees)
-
+  console.log(loadedCoffees);
+  
   return (
     <div>
       <Banner></Banner>
@@ -18,7 +18,7 @@ const Main = () => {
         <h1 className="text-coffee text-4xl font-semibold font-rancho mb-5 text-center xl:mb-10">
           Our Popular Products
         </h1>
-        <Coffees loadedCoffees={loadedCoffees}></Coffees>
+        <Coffees loadedCoffees={[loadedCoffees]}></Coffees>
       </div>
       <InstagramPhotos></InstagramPhotos>
     </div>

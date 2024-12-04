@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 const UpdateCoffee = () => {
   const coffee = useLoaderData();
   const { name, chef, supplier, price, category, details, photoURL } = coffee;
-  
+
   const handleUpdateCoffee = (event) => {
     event.preventDefault();
     const form = event.target;
@@ -24,29 +24,28 @@ const UpdateCoffee = () => {
       category,
       details,
       photoURL,
-      };
-      
-      fetch(`http://localhost:5000/coffees/${coffee._id}`, {
-          method: 'PUT',
-          headers: {
-              'content-type': 'application/json'
-          },
-          body: JSON.stringify(updatedCoffee)
-      })
-          .then(res => res.json())
-          .then(data => {
-            if (data.modifiedCount>0) {
-              Swal.fire({
-                title: 'Updated!',
-                text: 'Coffee updated Successfully',
-                icon: 'success',
-                confirmButtonText: 'Ok'
-              })
-            }
-      })
+    };
 
+    fetch(`coffee-shop-server-three.vercel.app/coffees/${coffee._id}`, {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(updatedCoffee),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.modifiedCount > 0) {
+          Swal.fire({
+            title: "Updated!",
+            text: "Coffee updated Successfully",
+            icon: "success",
+            confirmButtonText: "Ok",
+          });
+        }
+      });
   };
-    
+
   return (
     <div className="bg-coffee-add-bg bg-center bg-cover bg-no-repeat mb-10 lg:mb-20">
       <div className="px-5 lg:px-0 lg:w-4/5 mx-auto">
@@ -176,7 +175,10 @@ const UpdateCoffee = () => {
                 required
               />
             </div>
-            <button type="submit" className="w-full py-3 mt-10 rounded-md font-rancho text-coffee font-semibold text-lg bg-[#D2B48C]">
+            <button
+              type="submit"
+              className="w-full py-3 mt-10 rounded-md font-rancho text-coffee font-semibold text-lg bg-[#D2B48C]"
+            >
               Update Coffee Details
             </button>
           </form>
